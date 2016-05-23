@@ -1,4 +1,4 @@
-defmodule Todo.Database.Module do
+defmodule Todo.Database.Worker do
 
   use GenServer
 
