@@ -10,7 +10,7 @@ defmodule Todo.CacheTest do
   end
 
   test "server_process" do
-    {:ok, _} = Todo.Cache.start
+    {:ok, _} = Todo.Cache.start_link
     bobs_list = Todo.Cache.server_process(:bobs_list)
     alices_list = Todo.Cache.server_process(:alices_list)
 
