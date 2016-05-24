@@ -10,11 +10,11 @@ defmodule Todo.CacheTest do
   end
 
   test "server_process" do
-    {:ok, cache} = Todo.Cache.start
-    bobs_list = Todo.Cache.server_process(cache, :bobs_list)
-    alices_list = Todo.Cache.server_process(cache, :alices_list)
+    {:ok, _} = Todo.Cache.start
+    bobs_list = Todo.Cache.server_process(:bobs_list)
+    alices_list = Todo.Cache.server_process(:alices_list)
 
     assert bobs_list != alices_list
-    assert bobs_list == Todo.Cache.server_process(cache, :bobs_list)
+    assert bobs_list == Todo.Cache.server_process(:bobs_list)
   end
 end

@@ -3,11 +3,11 @@ defmodule Todo.Cache do
   use GenServer
 
   def start do
-    GenServer.start(__MODULE__, nil)
+    GenServer.start(__MODULE__, nil, name: :cache_server)
   end
 
-  def server_process(cache_pid, server_name) do
-    GenServer.call(cache_pid, {:server_process, server_name})
+  def server_process(server_name) do
+    GenServer.call(:cache_server, {:server_process, server_name})
   end
 
   @doc"""
