@@ -4,6 +4,7 @@ defmodule Todo.Database do
   alias Todo.Database.Worker, as: Worker
 
   def start(db_folder) do
+    IO.puts "Starting Todo.Database server"
     GenServer.start(__MODULE__, db_folder, name: :database_server)
   end
 
@@ -20,9 +21,9 @@ defmodule Todo.Database do
   end
 
   defp create_workers(db_folder) do
-    for index <- 0..2, into: HashDict.new do
+    for index <- 1..3, into: Map.new do
       {:ok, pid} = Worker.start(db_folder)
-      {index, pid}
+      {index - 1, pid}
     end
   end
 
@@ -35,7 +36,8 @@ defmodule Todo.Database do
   end
 
   def handle_call({:get_worker, key}, _, workers) do
-    {:reply, HashDict.get(workers, key), workers}
+    worker_key = :erlang.phash2(key, 3)
+    {:reply, Map.get(workers, worker_key), workers}
   end
 
 end

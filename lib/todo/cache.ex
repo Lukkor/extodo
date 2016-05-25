@@ -3,6 +3,7 @@ defmodule Todo.Cache do
   use GenServer
 
   def start_link do
+    IO.puts "Starting Todo.Cache server"
     GenServer.start_link(__MODULE__, nil, name: :cache_server)
   end
 

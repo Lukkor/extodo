@@ -7,6 +7,7 @@ defmodule Todo.Server do
   server interface
   """
   def start(name) do
+    IO.puts "Starting Todo.Server server"
     GenServer.start(__MODULE__, name)
   end
 
