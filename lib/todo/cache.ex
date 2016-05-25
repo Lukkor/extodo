@@ -15,7 +15,6 @@ defmodule Todo.Cache do
   gen_server callbacks
   """
   def init(_) do
-    Todo.Database.start("./persist/")
     {:ok, HashDict.new}
   end
 
@@ -24,7 +23,7 @@ defmodule Todo.Cache do
       {:ok, server} ->
         {:reply, server, state}
       :error ->
-        {:ok, new_server} = Todo.Server.start(server_name)
+        {:ok, new_server} = Todo.Server.start_link(server_name)
         {:reply, new_server, HashDict.put(state, server_name, new_server)}
     end
   end

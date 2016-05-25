@@ -6,9 +6,9 @@ defmodule Todo.Server do
   @doc"""
   server interface
   """
-  def start(name) do
+  def start_link(name) do
     IO.puts "Starting Todo.Server server"
-    GenServer.start(__MODULE__, name)
+    GenServer.start_link(__MODULE__, name)
   end
 
   def add_entry(pid, entry) do
