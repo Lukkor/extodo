@@ -8,8 +8,8 @@ defmodule Todo.Database.Worker do
   alias Todo.Registry
 
   def start_link(db_folder, id) do
-    IO.puts "Starting Todo.Database.Worker server"
-    GenServer.start_link(__MODULE__, db_folder, name: Registry.register())
+    IO.puts "Starting Todo.Database.Worker server #{id}"
+    GenServer.start_link(__MODULE__, db_folder, name: via(id))
   end
 
   def get(id, key) do

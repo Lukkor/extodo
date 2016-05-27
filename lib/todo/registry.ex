@@ -13,11 +13,11 @@ defmodule Todo.Registry do
   end
 
   def register_name(key, pid) do
-    GenServer.cast(:registry, {:register_name, key, pid})
+    GenServer.call(:registry, {:register_name, key, pid})
   end
 
   def unregister_name(key) do
-    GenServer.cast(:registry, {:unregister_name, key})
+    GenServer.call(:registry, {:unregister_name, key})
   end
 
   def whereis_name(key) do
@@ -28,7 +28,7 @@ defmodule Todo.Registry do
   end
 
   def send(key, message) do
-    case whereis(key) do
+    case whereis_name(key) do
       :undefined -> {:badarg, {key, message}}
       pid ->
         Kernel.send(pid, message)
@@ -40,30 +40,30 @@ defmodule Todo.Registry do
   gen_server callbacks
   """
   def init(_) do
-    :ets.new(:registry, [])
+    :ets.new(:registry, [:named_table, :protected, :set])
     {:ok, nil}
   end
 
-  def handle_call({:register_name, key, pid}, _, _) do
-    if whereis(key) != :undefined do
-      {:reply, :no, nil}
+  def handle_call({:register_name, key, pid}, _, state) do
+    if whereis_name(key) != :undefined do
+      {:reply, :no, state}
     else
       Process.monitor(pid)
       :ets.insert(:registry, {key, pid})
-      {:reply, :yes, nil}
+      {:reply, :yes, state}
     end
   end
 
-  def handle_call({:unregister_name, key}, _) do
+  def handle_call({:unregister_name, key}, state) do
     :ets.delete(:registry, key)
-    {:reply, key, nil}
+    {:reply, key, state}
   end
 
-  def handle_info({:DOWN, _, :process, pid, _}, _) do
+  def handle_info({:DOWN, _, :process, pid, _}, state) do
     :ets.match_delete(:registry, {:_, pid})
-    {:noreply, nil}
+    {:noreply, state}
   end
 
-  def handle_info(_, _), do: {:noreply, nil}
+  def handle_info(_, state), do: {:noreply, state}
 
 end
