@@ -1,4 +1,7 @@
 defmodule Todo.Database do
+  @moduledoc"""
+  Write (trhough workers) Todo entries in files
+  """
 
   use GenServer
   alias Todo.Database.Worker, as: Worker

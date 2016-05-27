@@ -1,4 +1,7 @@
 defmodule Todo.Server do
+  @moduledoc"""
+  Process which keeps Todo.List structures
+  """
 
   use GenServer
   alias Todo.List

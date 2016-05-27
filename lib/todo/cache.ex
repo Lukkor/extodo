@@ -1,4 +1,7 @@
 defmodule Todo.Cache do
+  @moduledoc"""
+  Keeps knowledge and start Todo.Server
+  """
 
   use GenServer
 
