@@ -10,8 +10,16 @@ defmodule Todo.Server do
   server interface
   """
   def start_link(name) do
-    IO.puts "Starting Todo.Server server"
-    GenServer.start_link(__MODULE__, name)
+    IO.puts "Starting Todo.Server server for #{name}"
+    GenServer.start_link(__MODULE__, name, name: via(name))
+  end
+
+  def via(name) do
+    {:via, Todo.Registry, {:server, name}}
+  end
+
+  def whereis(name) do
+    Todo.Registry.whereis_name({:server, name})
   end
 
   def add_entry(pid, entry) do

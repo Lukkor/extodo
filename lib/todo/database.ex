@@ -8,7 +8,6 @@ defmodule Todo.Database do
   alias Todo.Database.{Worker, WorkersSupervisor}
 
   def start_link(db_folder) do
-    IO.puts "Starting Todo.Database server"
     WorkersSupervisor.start_link(db_folder, @pool_size)
   end
 
